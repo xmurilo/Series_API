@@ -18,7 +18,7 @@ router.delete("/:id", async (req, res) => {
     const { id } = req.params;
   
     try {
-      const user = await prisma.user.delete({
+      await prisma.user.delete({
         where: { id: Number(id) },
       });
       res.status(200).json("Usuario deletado com sucesso!");
@@ -29,4 +29,4 @@ router.delete("/:id", async (req, res) => {
   });
 
 
-export default router;  // Exporta o roteador para uso em outras partes da aplicação
+export default router;  
