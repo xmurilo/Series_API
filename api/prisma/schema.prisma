@@ -33,6 +33,7 @@ model Serie {
   name          String         @db.VarChar(60)
   streaming     StreamingType  @default(default)
   genre         Genres         @default(default) 
+  seasons       Int            @default(1)
   user          User           @relation(fields: [userId], references: [id])
   userId        Int
   deleted      Boolean         @default(false)
