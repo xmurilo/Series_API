@@ -15,4 +15,4 @@ router.get("/", async (req, res) => {
   });
 
 
-export default router;  // Exporta o roteador para uso em outras partes da aplicação
+export default router;  
