@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Lucas",
+    "email": "lucas@gmail.com",
+    "password": "@Lucas123"
+  },
+  {
+    "name": "Joao",
+    "email": "joao@gmail.com",
+    "password": "@Joao123"
+  },
+  {
+    "name": "Game of Thrones",
+    "streaming": "Max",
+    "genre": "Drama",
+    "userId": 1
+  },
+  {
+    "name": "Breaking Bad",
+    "streaming": "Netflix",
+    "genre": "Drama",
+    "userId": 2
+  },
+  {
+    "name": "The Mandalorian",
+    "streaming": "Disney",
+    "genre": "Ficcao",
+    "userId": 1
+  }
+]
