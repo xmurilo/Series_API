@@ -46,7 +46,7 @@ router.post("/", verifyToken, async (req: any, res) => {
   const { userLoggedId } = req;
 
   if (!name || !streaming || !genre) {
-    res.status(400).json({ erro: "Informe nome, raca, idade e custo_mensal" });
+    res.status(400).json({ erro: "Informe nome, streaming e gênero" });
     return;
   }
 
@@ -79,7 +79,7 @@ router.put("/:id", verifyToken, async (req, res) => {
   const { name, streaming, genre } = req.body;
 
   if (!name || !streaming || !genre) {
-    res.status(400).json({ erro: "Informe nome, raca, idade e custo_mensal" });
+    res.status(400).json({ erro: "Informe nome, streaming e gênero" });
     return;
   }
 
