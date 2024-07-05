@@ -43,7 +43,8 @@ router.get("/", async (req, res) => {
 router.post("/", verifyToken, async (req: any, res) => {
   const { name, streaming, genre } = req.body;
 
-  const { userLoggedId } = req;
+  // * userLoggedId é o id do usuário logado que está sendo passado pelo middleware verifyToken que é chamado na rota
+  const userLoggedId = req.userLoggedId;
 
   if (!name || !streaming || !genre) {
     res.status(400).json({ erro: "Informe nome, streaming e gênero" });
@@ -54,6 +55,8 @@ router.post("/", verifyToken, async (req: any, res) => {
     const serie = await prisma.serie.create({
       data: { name, streaming, genre, userId: userLoggedId },
     });
+    
+    
     res.status(201).json(serie);
   } catch (error) {
     res.status(400).json(error);
@@ -73,6 +76,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
     res.status(400).json(error);
   }
 });
+
 // * Rota de alteração de séries
 router.put("/:id", verifyToken, async (req, res) => {
   const { id } = req.params;
