@@ -1,23 +1,25 @@
 import dotenv from 'dotenv';
 dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env para process.env
 
-import jwt from "jsonwebtoken"; // Importa a biblioteca jsonwebtoken para criar tokens JWT
-import { PrismaClient } from "@prisma/client"; // Importa o cliente Prisma para interagir com o banco de dados
-import { Router } from "express"; // Importa o roteador do Express para definir rotas
-import bcrypt from 'bcrypt'; // Importa a biblioteca bcrypt para hashing de senhas
+import jwt from "jsonwebtoken"; 
+import { PrismaClient } from "@prisma/client"; 
+import { Router } from "express"; 
+import bcrypt from 'bcrypt'; 
 
-const prisma = new PrismaClient(); // Cria uma instância do cliente Prisma
-const router = Router(); // Cria uma instância do roteador do Express
+const prisma = new PrismaClient();
+const router = Router(); 
 
-const MAX_LOGIN_ATTEMPTS = 3; // Define o número máximo de tentativas de login permitidas
-const LOCK_TIME = 1 * 60 * 60 * 10; // Define o tempo de bloqueio em milissegundos (1 hora)
+// Define o número máximo de tentativas de login permitidas
+const MAX_LOGIN_ATTEMPTS = 3; 
+// Define o tempo de bloqueio em milissegundos (1 hora)
+const LOCK_TIME = 1 * 60 * 60 * 10; 
 
 router.post("/", async (req, res) => {
-  const { email, password } = req.body; // Extrai email e senha do corpo da requisição
+  const { email, password } = req.body; 
 
-  const defaultMessage = "Login ou senha incorretos"; // Mensagem padrão de erro
+  const defaultMessage = "Login ou senha incorretos"; 
 
-  if (!email || !password) { // Verifica se o email ou senha estão ausentes
+  if (!email || !password) { 
     res.status(400).json({ erro: defaultMessage });
     return;
   }
@@ -25,14 +27,14 @@ router.post("/", async (req, res) => {
   try {
     const user = await prisma.user.findFirst({
       where: { email }
-    }); // Busca o usuário pelo email no banco de dados
+    }); 
 
-    if (user == null) { // Se o usuário não for encontrado
+    if (user == null) { 
       res.status(400).json({ erro: defaultMessage });
       return;
     }
 
-    // Verifica se a conta está bloqueada
+    // Verifica se a conta está bloqueada 
     if (user.lockUntil && user.lockUntil > new Date()) {
       res.status(403).json({ erro: "Conta bloqueada. Tente novamente mais tarde." });
       return;
@@ -40,8 +42,6 @@ router.post("/", async (req, res) => {
 
     // Verifica se a senha está correta
     if (bcrypt.compareSync(password, user.password)) {
-      console.log('User authenticated:', user);
-
       // Reseta as tentativas de login e desbloqueia a conta, se necessário
       await prisma.user.update({
         where: { id: user.id },
@@ -51,27 +51,27 @@ router.post("/", async (req, res) => {
         }
       });
 
+      // Cria o payload do token
       const tokenPayload = {
-        userLogadoId: user.id,
-        userLogadoNome: user.name
-      }; // Cria o payload do token
+        userLoggedId: user.id,
+        userLoggedName: user.name
+      }; 
 
-      console.log('Token Payload:', tokenPayload);
-
+      
+      // Gera o token JWT
       const token = jwt.sign(
         tokenPayload,
         process.env.JWT_KEY as string,
         { expiresIn: "1h" }
-      ); // Gera o token JWT
+      ); 
 
-      console.log('Generated Token:', token);
 
       res.status(200).json({
         id: user.id,
         nome: user.name,
         email: user.email,
         token: token
-      }); // Retorna o token e informações do usuário
+      }); 
     } else {
       // Incrementa as tentativas de login e bloqueia a conta se necessário
       let loginAttempts = user.loginAttempts + 1;
@@ -96,14 +96,14 @@ router.post("/", async (req, res) => {
           complement: `Funcionário: ${user.email}`,
           userId: user.id
         }
-      }); // Cria um log de tentativa de acesso inválida
+      }); 
 
       res.status(400).json({ erro: defaultMessage });
     }
   } catch (error) {
     console.error('Error during login:', error);
-    res.status(500).json({ erro: 'Internal server error' }); // Lida com erros durante o login
+    res.status(500).json({ erro: 'Internal server error' }); 
   }
 });
 
-export default router; // Exporta o roteador para uso em outras partes da aplicação
+export default router; 
