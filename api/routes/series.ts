@@ -68,10 +68,10 @@ router.delete("/:id", verifyToken, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const serie = await prisma.serie.delete({
+     await prisma.serie.delete({
       where: { id: Number(id) },
     });
-    res.status(200).json(serie);
+    res.status(200).json({ message: "Série deletada com sucesso" });
   } catch (error) {
     res.status(400).json(error);
   }
