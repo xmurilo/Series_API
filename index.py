@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import requests
 
+
 def titulo(texto, sublinhado= "-"):
     print()
     print(sublinhado*40)

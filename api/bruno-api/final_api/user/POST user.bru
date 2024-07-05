@@ -1,11 +1,19 @@
 meta {
   name: POST user
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
-  url: http://localhost:3000/users
-  body: none
+  url: http://localhost:3000/register
+  body: json
   auth: none
+}
+
+body:json {
+  {
+  "name": "Lucas",
+  "email": "lucas@gmail.com",
+  "password": "@Lucas2855"
+  }
 }

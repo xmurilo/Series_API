@@ -20,6 +20,8 @@ model User {
   email        String   @db.VarChar(40)
   password     String   @db.VarChar(60)
   token        String?  @db.VarChar(120)
+  loginAttempts Int       @default(0)
+  lockUntil     DateTime?
   series      Serie[]
   logs         Log[]
   @@map("users")

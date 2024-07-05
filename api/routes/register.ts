@@ -53,41 +53,41 @@ function validatePassword(password: string) {
 }
 
 // * Rota de cadastro de usuário, validando a senha e impedindo o cadastro de 2 usuários com o mesmo e-mail.
-// router.post("/", async (req, res) => {
-//   const { name, email, password } = req.body
+router.post("/", async (req, res) => {
+  const { name, email, password } = req.body
 
-//   if (!name || !email || !password) {
-//     res.status(400).json({ erro: "Informe nome, email e senha" })
-//     return
-//   }
+  if (!name || !email || !password) {
+    res.status(400).json({ erro: "Informe nome, email e senha" })
+    return
+  }
 
-//   const user = await prisma.user.findFirst({
-//     where: { email: email }
-//   })
+  const user = await prisma.user.findFirst({
+    where: { email: email }
+  })
 
-//   if (user != null) {
-//     res.status(400).json({ erro: "Email já cadastrado" })
-//     return
-//   }
+  if (user != null) {
+    res.status(400).json({ erro: "Email já cadastrado" })
+    return
+  }
 
-//   const errors = validatePassword(password)
-//   if (errors.length > 0) {
-//     res.status(400).json({ erro: errors.join("; ") })
-//     return
-//   }
+  const errors = validatePassword(password)
+  if (errors.length > 0) {
+    res.status(400).json({ erro: errors.join("; ") })
+    return
+  }
 
-//   const salt = bcrypt.genSaltSync(12)
-//   const hash = bcrypt.hashSync(password, salt)
+  const salt = bcrypt.genSaltSync(12)
+  const hash = bcrypt.hashSync(password, salt)
 
-//   try {
-//     const user = await prisma.user.create({
-//       data: { name, email, password: hash }
-//     })
-//     res.status(201).json(user)
-//   } catch (error) {
-//     res.status(400).json(error)
-//   }
-// })
+  try {
+    const user = await prisma.user.create({
+      data: { name, email, password: hash }
+    })
+    res.status(201).json(user)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+})
 
 
 
@@ -117,6 +117,13 @@ router.put("/changePassword", async (req, res) => {
 
   if(!bcrypt.compareSync(password, existingUser.password)) {
     res.status(400).json({ erro: "Senha atual incorreta" })
+    return
+  }
+
+  let errorsNewPassword = validatePassword(newPassword)
+  if (errorsNewPassword.length > 0) {
+    res.status(400).json({ erro: errorsNewPassword.join("; ") })
+    errorsNewPassword = []
     return
   }
 
