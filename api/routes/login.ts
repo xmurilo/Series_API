@@ -40,9 +40,8 @@ router.post("/", async (req, res) => {
       return;
     }
 
-    // Verifica se a senha está correta
+  
     if (bcrypt.compareSync(password, user.password)) {
-      // Reseta as tentativas de login e desbloqueia a conta, se necessário
       await prisma.user.update({
         where: { id: user.id },
         data: {
