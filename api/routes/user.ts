@@ -7,7 +7,11 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     try {
-      const users = await prisma.user.findMany();
+      const users = await prisma.user.findMany({
+        include: {
+          series: true,
+        }
+      });
       res.status(200).json(users);
     } catch (error) {
       res.status(400).json(error);
