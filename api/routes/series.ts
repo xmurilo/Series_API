@@ -41,19 +41,19 @@ router.get("/", async (req, res) => {
 
 // * Rota de registro de séries
 router.post("/", verifyToken, async (req: any, res) => {
-  const { name, streaming, genre } = req.body;
+  const { name, streaming, genre, seasons } = req.body;
 
   // * userLoggedId é o id do usuário logado que está sendo passado pelo middleware verifyToken que é chamado na rota
   const userLoggedId = req.userLoggedId;
 
-  if (!name || !streaming || !genre) {
-    res.status(400).json({ erro: "Informe nome, streaming e gênero" });
+  if (!name || !streaming || !genre || !seasons) {
+    res.status(400).json({ erro: "Informe nome, streaming, gênero e temporadas" });
     return;
   }
 
   try {
     const serie = await prisma.serie.create({
-      data: { name, streaming, genre, userId: userLoggedId },
+      data: { name, streaming,  genre, seasons, userId: userLoggedId },
     });
     
     
@@ -80,10 +80,10 @@ router.delete("/:id", verifyToken, async (req, res) => {
 // * Rota de alteração de séries
 router.put("/:id", verifyToken, async (req, res) => {
   const { id } = req.params;
-  const { name, streaming, genre } = req.body;
+  const { name, streaming, genre, seasons } = req.body;
 
-  if (!name || !streaming || !genre) {
-    res.status(400).json({ erro: "Informe nome, streaming e gênero" });
+  if (!name || !streaming || !genre || !seasons) {
+    res.status(400).json({ erro: "Informe nome, streaming, gênero e temporadas" });
     return;
   }
 
@@ -94,6 +94,7 @@ router.put("/:id", verifyToken, async (req, res) => {
         name,
         streaming,
         genre,
+        seasons
       },
     });
     res.status(200).json(serie);
