@@ -13,17 +13,20 @@
     "name": "Game of Thrones",
     "streaming": "Max",
     "genre": "Drama",
+    "seasons": 8,
     "userId": 1
   },
   {
     "name": "Breaking Bad",
     "streaming": "Netflix",
     "genre": "Drama",
+    "seasons": 5,
     "userId": 2
   },
   {
     "name": "The Mandalorian",
     "streaming": "Disney",
+    "seasons": 2,
     "genre": "Ficcao",
     "userId": 1
   }
