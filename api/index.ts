@@ -5,10 +5,6 @@ const app = express();
 const port = 3000;
 import cors from "cors";
 
-const crypto = require("crypto");
-const secret = crypto.randomBytes(64).toString("hex");
-console.log(secret);
-
 dotenv.config();
 
 import seriesRoutes from "./routes/series";
