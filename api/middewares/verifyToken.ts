@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken"
 import { Request, Response, NextFunction } from 'express'
 
 interface TokenI {
-  userLogadoId: number
-  userLogadoNome: string
+  userLoggedId: number
+  userLoggedName: string
 }
 
 export function verifyToken(req: Request | any, res: Response, next: NextFunction) {
@@ -19,10 +19,10 @@ export function verifyToken(req: Request | any, res: Response, next: NextFunctio
   try {
     const decode = jwt.verify(token, process.env.JWT_KEY as string)
     console.log(decode)
-    const { userLogadoId, userLogadoNome } = decode as TokenI
+    const { userLoggedId, userLoggedName } = decode as TokenI
 
-    req.userLogadoId   = userLogadoId
-    req.userLogadoNome = userLogadoNome
+    req.userLoggedId   = userLoggedId
+    req.userLoggedName = userLoggedName
 
     next()
   } catch (error) {
