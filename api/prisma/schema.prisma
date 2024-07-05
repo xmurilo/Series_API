@@ -27,12 +27,6 @@ model User {
   @@map("users")
 }
 
-// {
-//  "name": "Lucas",
-//  "email": "lucas@gmail.com",
-//  "password": "123456"
-// }
-
 
 model Serie {
   id            Int            @id @default(autoincrement())
@@ -45,26 +39,6 @@ model Serie {
   @@map("series")
 }
 
-// {
-//  "name": "The Witcher",
-//  "streaming": "Netflix",
-//  "genre": "Acao",
-//  "userId": 1
-// }
-
-// {
-//  "name": "Breaking Bad",
-//  "streaming": "Netflix",
-//  "genre": "Drama",
-//  "userId": 1
-// }
-
-// {
-//  "name": "The Mandalorian",
-//  "streaming": "Disney",
-//  "genre": "Ficcao",
-//  "userId": 1
-// }
 
 model Log {
   id           Int      @id @default(autoincrement())
