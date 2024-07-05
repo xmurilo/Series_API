@@ -146,18 +146,20 @@ def series_by_streaming():
     series = response.json()
 
     if response.status_code == 200 and len(series) > 0:
-        streaming_groups = {}
+        streaming_dict = {}
         for serie in series:
             streaming = serie["streaming"]
-            if streaming not in streaming_groups:
-                streaming_groups[streaming] = []
-            streaming_groups[streaming].append(serie)
+            if streaming not in streaming_dict:
+                streaming_dict[streaming] = []
+            streaming_dict[streaming].append(serie)
 
-        for streaming, series_list in streaming_groups.items():
-            print(f"\n{streaming}:")
-            sorted_series = sorted(series_list, key=lambda x: x["seasons"], reverse=True)
-            for serie in sorted_series:
-                print(f"{serie['name']} ({serie['seasons']} temporadas)")
+        sorted_streamings = sorted(streaming_dict.items(), key=lambda x: len(x[1]), reverse=True)
+
+        for streaming, series_list in sorted_streamings:
+            print(f"{streaming}: Quantidade de séries {len(series_list)}")
+            for serie in series_list:
+                print(f"  - {serie['name']} ({serie['seasons']} temporadas) - {serie['genre']}")
+            print("=" * 40)
     else:
         print("Erro ao buscar séries ou nenhuma série encontrada!")
         erro = response.json()
