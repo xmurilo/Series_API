@@ -68,7 +68,6 @@ def list_series():
         print("=" * 40)
 
 def inclusion(token):
-    print(token)
     title("Inclusão de Série", "-")
     serie = {}
     serie["name"] = input("Nome da Série: ")
@@ -92,37 +91,25 @@ def inclusion(token):
 def update_serie(token):
     title("Atualização de Série", "-")
     list_series()
-    id = input("ID da Série: ")
-    url = f"http://localhost:3000/series/{id}"
+    id = input("Codigo da Série: ")
+    serie = {}
+    serie["name"] = input("Nome da Série: ")
+    serie["seasons"] = int(input("Quantidade de Temporadas: "))
+    serie["genre"] = input("Gênero: ")
+    serie["streaming"] = input("Streaming: ")
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(url, headers=headers)
+    response = requests.put(f"http://localhost:3000/series/{id}", json=serie, headers=headers)
+    
     if response.status_code == 200:
-        serie = response.json()
-        print("Série encontrada!")
-        print(serie["name"], serie["genre"], serie["streaming"], serie["seasons"])
-        option = input("Deseja atualizar a série? (s/n) ")
-        if option == "s":
-            serie["name"] = input("Nome da Série: ")
-            serie["seasons"] = int(input("Quantidade de Temporadas: "))
-            serie["genre"] = input("Gênero: ")
-            serie["streaming"] = input("Streaming: ")
-            response = requests.put(url, json=serie, headers=headers)
-            if response.status_code == 200:
-                print("Série atualizada com sucesso!")
-            else:
-                print("Erro ao atualizar série!")
-                erro = response.json()
-                print("=" * 40)
-                print(erro)
-                print("=" * 40)
-        else:
-            print("Operação cancelada!")
+        print("Série atualizada com sucesso!")
     else:
-        print("Série não encontrada!")
+        print("Erro ao atualizar série!")
         erro = response.json()
         print("=" * 40)
         print(erro)
         print("=" * 40)
+
+    
 
 def delete_serie(token):
     title("Exclusão de Série", "-")
