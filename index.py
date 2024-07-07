@@ -5,10 +5,10 @@ from colorama import Fore, Back, Style
 
 token = None
 
-def title(texto, sublinhado= "-"):
-    print(Fore.BLUE + sublinhado * len(texto))
-    print(Fore.BLUE + texto)
-    print(Fore.BLUE + sublinhado * len(texto))
+def title(text, underline= "-"):
+    print(Fore.BLUE + underline * len(text))
+    print(Fore.BLUE + text)
+    print(Fore.BLUE + underline * len(text))
     print(Style.RESET_ALL)
 
 def register():
